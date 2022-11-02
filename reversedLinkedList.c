@@ -1,108 +1,85 @@
-/*
- * C Program to Reverse a Linked List using iterative
- */
-#include<stdio.h>
-#include<malloc.h>
-/*
-* A linked list node
-*/
-struct node
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
 {
-    int data;
-    struct node* next;
-};
- 
-//Globally initialized head pointer
-struct node* head = NULL;
- 
-//function prototyping
-struct node* create_node(int);
-void insert_begin(int);
-void reverse_list();
-void print();
+  int val;
+  struct Node *next;
+}
+*start = NULL;
+
+void makeLinkedList(int A[], int n)
+{
+    int i;
+    struct Node *tmp, *last;
+    start = (struct Node *) malloc (sizeof (struct Node));
+    start->val = A[0];
+    start->next = NULL;
+    last = start;
+    for (i = 1; i < n; i++)
+    {
+        tmp = (struct Node *) malloc (sizeof (struct Node));
+        tmp->val = A[i];
+        tmp->next = NULL;
+        last->next = tmp;
+        last = tmp;
+    }
+}
+int Count(struct Node * p) {
+    int l = 0;
+    while (p) {
+        l++;
+        p = p -> next;
+    }
+    return l;
+}
+void printList(struct Node *p)
+{
+    while (p != NULL)
+    {
+        printf ("%d ", p->val);
+        p = p->next;
+    }
+}
+void reverseList(struct Node *p)
+{
+    int *A, i = 0;
+    struct Node *q = p;
+    A = (int *) malloc(sizeof(int) * Count(p));
+    while (q != NULL)
+    {
+        A[i] = q->val;
+        q = q->next;
+        i++;
+    }
+    
+    q = p;
+    i--;
+    while (q != NULL)
+    {
+        q->val = A[i];
+        q = q->next;
+        i--;
+    }
+}
 int main()
 {
-    /* Create some nodes and insert data into them */
-    insert_begin(10);
-    insert_begin(90);
-    insert_begin(31);
-    insert_begin(78);
-    insert_begin(99);
-    printf("Linked List before reversed: \n");
-    print();
-    reverse_list();
-    printf("\nLinked List after reversed: \n");
-    print();
+    int num;
+    printf("Enter number of elements : ");
+    scanf("%d", &num);
+    
+    int Ar[num];
+    
+    for (int i = 0; i<num; i++) {
+        printf("Enter an element : ");
+        scanf("%d", &Ar[i]);
+    }
+    
+    makeLinkedList(Ar, num);
+    printf("Original Linked List : \n");
+    printList(start);
+    reverseList(start);
+    printf("\nReversed Linked List : \n");
+    printList(start);
     return 0;
-}
- 
-/*
-* Creates a new node using the malloc function
-*/
-struct node* create_node(int data)
-{
-    struct node* new_node = (struct node*) malloc (sizeof(struct node));
-    if (new_node == NULL)
-    {
-        printf("Memory can't be allocated for new node");
-        return NULL;
-    }
-    else
-    {
-        new_node -> data = data;
-        new_node -> next = NULL;
-        return new_node;
-    }
-}
- 
-/*
-* insert a new node at the beginning of the list
-*/
-void insert_begin(int data)
-{
-    struct node* new_node = create_node(data);
-    if (new_node != NULL)
-    {
-        new_node -> next = head;
-        head = new_node;
-    }
-}
- 
-/*
-* reverse the linked list
-*/
-void reverse_list()
-{
-    if (head == NULL)
-    {
-        return;
-    }
-    struct node* temp = head;
-    struct node* new_head = NULL;
- 
-    // create new nodes and insert them beginning
-    while (temp != NULL)
-    {
-        struct node* new_node = create_node(temp->data);
-        new_node->next = new_head;
-        new_head = new_node;
-        temp = temp->next;
-    }
- 
-    // update the head with the new head
-    head = new_head;
-}
- 
-/*
-* prints the linked list
-*/
-void print()
-{
-    struct node* temp = head;
-    while (temp != NULL)
-    {
-        printf("%d --> ", temp->data);
-        temp = temp->next;
-    }
-    printf("NULL \n");
 }
