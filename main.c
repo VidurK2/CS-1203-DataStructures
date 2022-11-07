@@ -1,37 +1,39 @@
+//Reference : https://www.w3resource.com/c-programming-exercises/linked_list/c-linked_list-exercise-1.php
+
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node
+struct node //Defining the node
 {
-    int number;
-    struct node *next;
+    int number; //Value
+    struct node *next; //Address of the next element
 }*startnode;
 
-void listPrint()
+void listPrint() //function to print list
 {
     struct node *tmp;
     if(startnode == NULL)
     {
-        printf("The List is empty!");
+        printf("The List is empty!"); //If the first node is empty, then the list is empty
     }
     else
     {
         tmp = startnode;
         while(tmp != NULL)
         {
-            printf(" Node Value : %d\n", tmp->number);
-            tmp = tmp->next;
+            printf(" Node Value : %d\n", tmp->number); //prints out all values of the list
+            tmp = tmp->next; //Goes to next
         }
     }
 }
 
-void linkedList(int n)
+void linkedList(int n) //function to make linked list
 {
-    struct node *fnNode, *tmp;
+    struct node *node2, *tmp;
     int number, i;
-    startnode = (struct node *)malloc(sizeof(struct node));
+    startnode = (struct node *)malloc(sizeof(struct node)); // allocates size of the node
 
-    if(startnode == NULL)
+    if(startnode == NULL) //startnode cant be 0
     {
         printf("Error! First node is NULL!");
     }
@@ -40,15 +42,15 @@ void linkedList(int n)
 
 
         printf("Enter value for node 1 : ");
-        scanf("%d", &number);
+        scanf("%d", &number); //asks for first value
         startnode->number = number;
         startnode->next = NULL;
         tmp = startnode;
 
-        for(i=2; i<=n; i++)
+        for(i=2; i<=n; i++) //loops and asks for input for the list
         {
-            fnNode = (struct node *)malloc(sizeof(struct node));
-            if(fnNode == NULL)
+            node2 = (struct node *)malloc(sizeof(struct node));
+            if(node2 == NULL)
             {
                 printf("Memory is NULL!");
                 break;
@@ -58,10 +60,10 @@ void linkedList(int n)
                 printf("Enter value for node %d : ", i);
                 scanf(" %d", &number);
  
-                fnNode->number = number;
-                fnNode->next = NULL;
+                node2->number = number;
+                node2->next = NULL;
  
-                tmp->next = fnNode;
+                tmp->next = node2;
                 tmp = tmp->next;
             }
         }
