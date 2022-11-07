@@ -1,88 +1,81 @@
 //Reference : https://www.w3resource.com/c-programming-exercises/linked_list/c-linked_list-exercise-1.php
-
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node //Defining the node
-{
-    int number; //Value
-    struct node *next; //Address of the next element
-}*startnode;
+//Defining the node
+struct node {
+    int val;            //Value
+    struct node *next;  // Address of the next element
+};
+struct node *head = NULL; //Delcaring head = NULL as a global variable
 
-void listPrint() //function to print list
-{
-    struct node *tmp;
-    if(startnode == NULL)
-    {
-        printf("The List is empty!"); //If the first node is empty, then the list is empty
+
+//Function to create Linked List
+int createLinkedList () {
+    struct node *tmp, *node2; //Making two nodes
+    tmp=(struct node *)malloc(sizeof(struct node)); //Allocating memory for tmp
+    
+    printf("Enter value for linked list : ");
+    scanf("%d", &tmp->val);
+    tmp->next = NULL; //Setting next element's address to NULL
+    
+    //If head is null, it sets heaf's value as tmp
+    if (head == NULL) {
+        head = tmp;
     }
-    else
-    {
-        tmp = startnode;
-        while(tmp != NULL)
-        {
-            printf(" Node Value : %d\n", tmp->number); //prints out all values of the list
-            tmp = tmp->next; //Goes to next
-        }
-    }
-}
-
-void linkedList(int n) //function to make linked list
-{
-    struct node *node2, *tmp;
-    int number, i;
-    startnode = (struct node *)malloc(sizeof(struct node)); // allocates size of the node
-
-    if(startnode == NULL) //startnode cant be 0
-    {
-        printf("Error! First node is NULL!");
-    }
-    else
-    {
-
-
-        printf("Enter value for node 1 : ");
-        scanf("%d", &number); //asks for first value
-        startnode->number = number;
-        startnode->next = NULL;
-        tmp = startnode;
-
-        for(i=2; i<=n; i++) //loops and asks for input for the list
-        {
-            node2 = (struct node *)malloc(sizeof(struct node));
-            if(node2 == NULL)
-            {
-                printf("Memory is NULL!");
-                break;
-            }
-            else
-            {
-                printf("Enter value for node %d : ", i);
-                scanf(" %d", &number);
- 
-                node2->number = number;
-                node2->next = NULL;
- 
-                tmp->next = node2;
-                tmp = tmp->next;
-            }
-        }
-    }
-}
-
-
-
-void linkedList(int n); // function to create the list
-void listPrint();         // function to display the list
-
-int main()
-{
-    int n;
+    
+    //Otherwise, sets node2 as the head
+    else {
+        node2 = head;
         
-    printf("How many nodes do you want : ");
+        //As long as the next address isn't NULL, it goes through the linked list
+        while (node2->next!=NULL) {
+            node2 = node2->next;
+        }
+        node2->next = tmp;
+    }
+    
+    return 0;
+    
+}
+
+//Function to print list
+int printList () {
+    struct node *node2;
+    
+    //If the head is NULL, that means the list is empty
+    if (head == NULL) {
+        printf("The linked list has no elements!\n");
+    }
+    
+    //Otherwise, traverse through the list to print out values
+    else {
+        node2 = head;
+        printf("The linked list :-\n");
+        
+        while (node2 != NULL) {
+            int x = node2->val;
+            printf("%d\n", x);
+            
+            node2 = node2->next;
+        }
+    }
+    
+    return 0;
+}
+
+//Main function to ask for size of list, create it, and display it
+int main () {
+    
+    int n;
+    printf("Enter number of elements in the linked list : ");
     scanf("%d", &n);
-    linkedList(n);
-    printf("\n Linked List :--- : \n");
-    listPrint();
+    
+    for (int i; i<=n; i++) {
+        createLinkedList();
+    }
+    
+    printList();
+    
     return 0;
 }
