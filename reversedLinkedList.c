@@ -1,85 +1,108 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node
-{
-  int val;
-  struct Node *next;
-}
-*start = NULL;
+//Defining the node
+struct node {
+    int val;            //Value
+    struct node *next;  // Address of the next element
+};
+struct node *head = NULL; //Delcaring head = NULL as a global variable
 
-void makeLinkedList(int A[], int n)
-{
-    int i;
-    struct Node *tmp, *last;
-    start = (struct Node *) malloc (sizeof (struct Node));
-    start->val = A[0];
-    start->next = NULL;
-    last = start;
-    for (i = 1; i < n; i++)
-    {
-        tmp = (struct Node *) malloc (sizeof (struct Node));
-        tmp->val = A[i];
-        tmp->next = NULL;
-        last->next = tmp;
-        last = tmp;
-    }
-}
-int Count(struct Node * p) {
-    int l = 0;
-    while (p) {
-        l++;
-        p = p -> next;
-    }
-    return l;
-}
-void printList(struct Node *p)
-{
-    while (p != NULL)
-    {
-        printf ("%d ", p->val);
-        p = p->next;
-    }
-}
-void reverseList(struct Node *p)
-{
-    int *A, i = 0;
-    struct Node *q = p;
-    A = (int *) malloc(sizeof(int) * Count(p));
-    while (q != NULL)
-    {
-        A[i] = q->val;
-        q = q->next;
-        i++;
+
+//Function to create Linked List
+int createLinkedList () {
+    struct node *tmp, *node2; //Making two nodes
+    tmp=(struct node *)malloc(sizeof(struct node)); //Allocating memory for tmp
+    
+    printf("Enter value for linked list : ");
+    scanf("%d", &tmp->val);
+    tmp->next = NULL; //Setting next element's address to NULL
+    
+    //If head is null, it sets heaf's value as tmp
+    if (head == NULL) {
+        head = tmp;
     }
     
-    q = p;
-    i--;
-    while (q != NULL)
-    {
-        q->val = A[i];
-        q = q->next;
-        i--;
+    //Otherwise, sets node2 as the head
+    else {
+        node2 = head;
+        
+        //As long as the next address isn't NULL, it goes through the linked list
+        while (node2->next!=NULL) {
+            node2 = node2->next;
+        }
+        node2->next = tmp;
     }
+    
+    return 0;
+    
 }
-int main()
-{
-    int num;
-    printf("Enter number of elements : ");
-    scanf("%d", &num);
+
+//Function to print list
+int printList () {
+    struct node *node2;
     
-    int Ar[num];
-    
-    for (int i = 0; i<num; i++) {
-        printf("Enter an element : ");
-        scanf("%d", &Ar[i]);
+    //If the head is NULL, that means the list is empty
+    if (head == NULL) {
+        printf("The linked list has no elements!\n");
     }
     
-    makeLinkedList(Ar, num);
-    printf("Original Linked List : \n");
-    printList(start);
-    reverseList(start);
-    printf("\nReversed Linked List : \n");
-    printList(start);
+    //Otherwise, traverse through the list to print out values
+    else {
+        node2 = head;
+        printf("The Original linked list :-\n");
+        
+        while (node2 != NULL) {
+            int x = node2->val;
+            printf("%d\n", x);
+            
+            node2 = node2->next;
+        }
+    }
+    
+    return 0;
+}
+
+void reverse(struct node** head)
+{
+    struct node* prev = NULL;   //Points to the previous element
+    struct node* curr = *head;  //Points to the current element
+    
+    
+    //While current doesn't reach end of linked list, loop
+    while (curr != NULL)
+    {
+        //Next will be the next element of current
+        struct node* next = curr->next;
+        
+        curr->next = prev;    //Set prev to new value
+        
+        //Moves prev and curr one step forward
+        prev = curr;
+        curr = next;
+    }
+    
+    //The head is not the previous element
+    *head = prev;
+    
+    printf("Reversed Linked List :-");
+    printList();
+}
+
+//Main function to ask for size of list, create it, and display it
+int main () {
+    
+    int n;
+    printf("Enter number of elements in the linked list : ");
+    scanf("%d", &n);
+    
+    for (int i; i<=n; i++) {
+        createLinkedList();
+    }
+    
+    printList();
+    reverse(&head);
+    
     return 0;
 }
