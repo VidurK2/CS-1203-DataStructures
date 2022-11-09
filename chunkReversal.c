@@ -1,99 +1,117 @@
-// C program to reverse a linked list in groups of given size
-#include<stdio.h>
-#include<stdlib.h>
 
-/* Link list node */
-struct Node
-{
-    int data;
-    struct Node* next;
+#include <stdio.h>
+#include <stdlib.h>
+
+//Defining the node
+struct node {
+    int val;            //Value
+    struct node *next;  // Address of the next element
 };
+struct node *head = NULL; //Delcaring head = NULL as a global variable
 
-/* Reverses the linked list in groups of size k and returns the
-pointer to the new head node. */
-struct Node *reverse (struct Node *head, int k)
-{
-    if (!head)
-        return NULL;
+
+//Function to create Linked List
+int createLinkedList () {
+    struct node *tmp, *node2; //Making two nodes
+    tmp=(struct node *)malloc(sizeof(struct node)); //Allocating memory for tmp
     
-    struct Node* current = head;
-    struct Node* next = NULL;
-    struct Node* prev = NULL;
-    int count = 0;
+    printf("Enter value for linked list : ");
+    scanf("%d", &tmp->val);
+    tmp->next = NULL; //Setting next element's address to NULL
     
-    
-    
-    /*reverse first k nodes of the linked list */
-    while (current != NULL && count < k)
-    {
-        next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
-        count++;
+    //If head is null, it sets heaf's value as tmp
+    if (head == NULL) {
+        head = tmp;
     }
     
-    /* next is now a pointer to (k+1)th node
-    Recursively call for the list starting from current.
-    And make rest of the list as next of first node */
-    if (next != NULL)
-    head->next = reverse(next, k);
-
-    /* prev is new head of the input list */
-    return prev;
-}
-
-/* UTILITY FUNCTIONS */
-/* Function to push a node */
-void push(struct Node** head_ref, int new_data)
-{
-    /* allocate node */
-    struct Node* new_node =
-            (struct Node*) malloc(sizeof(struct Node));
-
-    /* put in the data */
-    new_node->data = new_data;
-
-    /* link the old list off the new node */
-    new_node->next = (*head_ref);
-
-    /* move the head to point to the new node */
-    (*head_ref) = new_node;
-}
-
-/* Function to print linked list */
-void printList(struct Node *node)
-{
-    while (node != NULL)
-    {
-        printf("%d ", node->data);
-        node = node->next;
+    //Otherwise, sets node2 as the head
+    else {
+        node2 = head;
+        
+        //As long as the next address isn't NULL, it goes through the linked list
+        while (node2->next!=NULL) {
+            node2 = node2->next;
+        }
+        node2->next = tmp;
     }
+    
+    return 0;
+    
 }
 
-/* Driver code*/
-int main(void)
+//Function to print list
+int printList () {
+    struct node *node2;
+    
+    //If the head is NULL, that means the list is empty
+    if (head == NULL) {
+        printf("The linked list has no elements!\n");
+    }
+    
+    //Otherwise, traverse through the list to print out values
+    else {
+        node2 = head;
+        printf("The Original linked list :-\n");
+        
+        while (node2 != NULL) {
+            int x = node2->val;
+            printf("%d\n", x);
+            
+            node2 = node2->next;
+        }
+    }
+    
+    return 0;
+}
+
+void reverse(struct node** head, int cnt)
 {
-    /* Start with the empty list */
-    struct Node* head = NULL;
+    struct node* prev = NULL;   //Points to the previous element
+    struct node* curr = *head;  //Points to the current element
 
-    /* Created Linked list is 1->2->3->4->5->6->7->8->9 */
-    push(&head, 9);
-    push(&head, 8);
-    push(&head, 7);
-    push(&head, 6);
-    push(&head, 5);
-    push(&head, 4);
-    push(&head, 3);
-    push(&head, 2);
-    push(&head, 1);
+    
+    
+    //While current doesn't reach end of the chunk size of the linked list, loop
+    for (int i=0; i<cnt; i++)
+    {
+        //Next will be the next element of current
+        struct node* next = curr->next;
+        
+        curr->next = prev;    //Set prev to new value
+        
+        //Moves prev and curr one step forward
+        prev = curr;
+        curr = next;
+    }
+    
+    if (next != NULL) {
+        head->next = reverse(next, cnt);
+    }
+    //The head is not the previous element
+    *head = prev;
+    
+    printf("Reversed Linked List :-");
+    printList();
+}
 
-    printf("\nGiven linked list \n");
-    printList(head);
-    head = reverse(head, 4);
-
-    printf("\nReversed Linked list \n");
-    printList(head);
-
-    return(0);
+//Main function to ask for size of list, create it, and display it
+int main () {
+    
+    int n;
+    printf("Enter number of elements in the linked list : ");
+    scanf("%d", &n);
+    
+    for (int i; i<=n; i++) {
+        createLinkedList();
+    }
+    
+    printList();
+    
+    int cnt;
+    printf("Enter chunk size : ");
+    scanf("%d", &cnt);
+    
+    reverse(&head, cnt);
+    
+    return 0;
 }
