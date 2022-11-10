@@ -1,66 +1,64 @@
-// C program for implementation of selection sort
 #include <stdio.h>
+#include <stdlib.h>
 
-void swap(int *xp, int *yp)
-{
-    int temp = *xp;
-    *xp = *yp;
-    *yp = temp;
-}
-
-void selectionSort(int arr[], int n)
-{
-    int i, j, min_idx;
-
-    // One by one move boundary of unsorted subarray
-    for (i = 0; i < n-1; i++)
-    {
-        // Find the minimum element in unsorted array
-        min_idx = i;
-        for (j = i+1; j < n; j++)
-        if (arr[j] < arr[min_idx])
-            min_idx = j;
-
-        // Swap the found minimum element with the first element
-        if(min_idx != i)
-            swap(&arr[min_idx], &arr[i]);
-    }
-}
-
-/* Function to print an array */
-void printArray(int arr[], int size)
-{
-    int i;
-    for (i=0; i < size; i++)
-        printf("%d ", arr[i]);
-    printf("\n");
-}
-
-// Driver program to test above functions
-int main()
-{
+//Function to do selection sort on array
+int selectSort(int A[], int num) {
     
-    int size;
-
+    int pos; //Keeps track of the minimum index
     
-    printf("Enter size of array : ");
-    scanf("%d", &size);
-
-    int arr[size];
-    
-    for (int i = 0; i < size; i++) {
-        int elem;
+    //Traversing through the list and selecting elements as 'pos'
+    for (int i=0; i<num-1; i++) {
+        pos = i;
         
-        printf("\nEnter element : ");
-        scanf("%d", &arr[i]);
+        //Comparing that pos with j of Array
+        for (int j=i+1; j<num; j++) {
+            if (A[j] < A[pos]) {
+                pos = j;
+            }
+            
+            //If the pos isnt the same as i, then we swap the elements
+            if (pos!=i) {
+                int z = A[pos];
+                A[pos] = A[i];
+                A[i] = z;
+            }
+        }
     }
     
-    
-    int n = sizeof(arr)/sizeof(arr[0]);
-    selectionSort(arr, n);
-    printf("Sorted array: \n");
-    
-    printArray(arr, n);
     return 0;
 }
 
+//Function to print out the array
+int printArr(int A[], int num) {
+    for (int i=0; i<num; i++) {
+        int x = A[i];
+        printf("%d \t", x);
+    }
+    printf("\n");
+    
+    return 0;
+}
+
+//Main function that creates the array with input
+int main () {
+    int num;
+    printf("Enter number of elements : ");
+    scanf("%d", &num);
+    
+    int A[num];
+    
+    for (int i=0; i<num; i++) {
+        int x;
+        printf("Enter element : ");
+        scanf("%d", &x);
+        
+        A[i] = x;
+    }
+    
+    selectSort(A, num);
+    
+    printf("========Sorted List=========\n");
+    printArr(A, num);
+    
+    return 0;
+}
