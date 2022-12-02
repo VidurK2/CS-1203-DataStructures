@@ -16,7 +16,7 @@ int sortHeap(int A[], int num) {
         
         while (x !=  0) {
             rootEl  = (x - 1)/2;
-            /* to create MAX A  array */
+
             if  (A[rootEl] < A[x]) {
                 swap(&A[rootEl], &A[x]);
             }
